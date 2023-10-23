@@ -1,9 +1,9 @@
 require("dotenv").config();
 const mysql = require("mysql2");
-const DATABASE_HOST = process.env.DATABASE_HOST;
-const DATABASE_USER = process.env.DATABASE_USER;
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
-const DATABASE_NAME = process.env.DATABASE_NAME;
+const DATABASE_HOST = "localhost";
+const DATABASE_USER = "root";
+const DATABASE_PASSWORD = "";
+const DATABASE_NAME = "mindx";
 
 const connection = mysql.createPool({
   host: DATABASE_HOST,
