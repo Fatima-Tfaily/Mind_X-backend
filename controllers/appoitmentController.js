@@ -74,5 +74,4 @@ const deleteAppoitmentByID = async (req, res) => {
     });
   }
 };
-
 module.exports = { getAllAppoitment, addAppoitment, deleteAppoitmentByID };
