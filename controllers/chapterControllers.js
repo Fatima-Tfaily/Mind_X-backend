@@ -1,4 +1,5 @@
 const db = require("../config/db");
+
 const getAllChapter = async (req, res) => {
   try {
     const [result] = await db.query("SELECT * FROM language_content");
@@ -36,6 +37,7 @@ const addChapter = async (req, res) => {
     question2,
     answer2,
   } = req.body;
+  
   console.log(
   language_id,
     chapter_title,
