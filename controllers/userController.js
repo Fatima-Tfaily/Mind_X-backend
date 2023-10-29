@@ -82,7 +82,7 @@ const adminLogin = async (req, res) => {
 
     const query = `SELECT * FROM users WHERE name='${name}' AND email='${email}' AND password='${password}' AND role = 'admin'`;
     const [result] = await db.query(query);
-    
+
     if (result.length > 0) {
       res.status(200).json({
         success: true,
@@ -104,5 +104,10 @@ const adminLogin = async (req, res) => {
   }
 };
 
-
-module.exports = { getAllUsers, addUser, getUserByRole, deleteUserByID, adminLogin };
+module.exports = {
+  getAllUsers,
+  addUser,
+  getUserByRole,
+  deleteUserByID,
+  adminLogin,
+};

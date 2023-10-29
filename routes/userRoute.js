@@ -6,7 +6,7 @@ const {
   addUser,
   getUserByRole,
   deleteUserByID,
-  adminLogin
+  adminLogin,
 } = require("../controllers/userController");
 
 router.get("/getAll", getAllUsers);
