@@ -5,9 +5,11 @@ const {
   getAllAppoitment,
   addAppoitment,
   deleteAppoitmentByID,
+  getStudentId,
 } = require("../controllers/appoitmentController");
 
 router.get("/getAll", getAllAppoitment);
+router.get("/getS/:name", getStudentId);
 router.post("/add", addAppoitment);
 router.delete("/delete/:appoitment_id", deleteAppoitmentByID);
 
