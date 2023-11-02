@@ -74,4 +74,32 @@ const deleteAppoitmentByID = async (req, res) => {
     });
   }
 };
-module.exports = { getAllAppoitment, addAppoitment, deleteAppoitmentByID };
+
+const getStudentId = async (req, res) => {
+  const { name } = req.params;
+  try {
+    const [result] = await db.query(
+      // Corrected SQL query
+      `SELECT student_id FROM appointments NATURAL JOIN users WHERE name=? AND role="student"`,
+      [name] // Pass name as a parameter
+    );
+    res.status(200).json({
+      success: true,
+      message: "Appointments data retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "No student with this name",
+      error,
+    });
+  }
+};
+
+module.exports = {
+  getAllAppoitment,
+  addAppoitment,
+  deleteAppoitmentByID,
+  getStudentId,
+};

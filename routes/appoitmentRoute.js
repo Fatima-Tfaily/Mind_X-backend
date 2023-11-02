@@ -5,10 +5,12 @@ const {
   getAllAppoitment,
   addAppoitment,
   deleteAppoitmentByID,
+  getStudentId,
 } = require("../controllers/appoitmentController");
 
-router.get("/getAllAppoitment", getAllAppoitment);
-router.post("/addAppoitment", addAppoitment);
+router.get("/getAll", getAllAppoitment);
+router.get("/getStudentId/:name", getStudentId);
+router.post("/add", addAppoitment);
 router.delete("/delete/:appoitment_id", deleteAppoitmentByID);
 
 module.exports = router;
