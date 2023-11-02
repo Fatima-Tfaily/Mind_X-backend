@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const userRoutes = require('./routes/userRoutes');
 const chapterRoutes = require("./routes/chapterRoutes");
-const languageRoutes=require("./routes/languageRoutes")
+const languageRoutes=require("./routes/languageRoutes");
 const PORT = process.env.PORT;
 app.use(cors());
 

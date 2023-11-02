@@ -37,15 +37,15 @@ const addChapter = async (req, res) => {
     answer2,
   } = req.body;
   console.log(
-  language_id,
+    language_id,
     chapter_title,
     chapter_content,
     question,
     answer,
     question1,
-      answer1,
-     question2,
-    answer2,
+    answer1,
+    question2,
+    answer2
   );
 
   try {
@@ -64,7 +64,6 @@ const addChapter = async (req, res) => {
       ]
     );
 
-    await result.save();
     res.status(200).json({
       success: true,
       messsage: "success added",
@@ -114,7 +113,7 @@ const deleteChapterById = async (req, res) => {
     });
   }
 };
-const updateChapter= async (req, res) => {
+const updateChapter = async (req, res) => {
   console.log("request", req.body);
   if (!req.body) {
     return res.status(400).json({
@@ -137,18 +136,18 @@ const updateChapter= async (req, res) => {
 
   try {
     const result = await db.query(
-      `UPDATE languages 
+      `UPDATE language_content 
        SET 
-        language_id = ?,
-        chapter_title = ?,
-        chapter_content = ?,
-        question = ?,
-        answer = ?,
-        question1 = ?,
-        answer1 = ?
+        language_id =?,
+        chapter_title=? ,
+        chapter_content=? ,
+        question=? ,
+        answer=?,
+        question1 =?,
+        answer1 =?,
        question2=?,
-        answer2=?,
-        WHERE language_content_id = ?`,
+        answer2=?
+         WHERE language_content_id = ?`,
       [
         language_id,
         chapter_title,
@@ -173,7 +172,6 @@ const updateChapter= async (req, res) => {
       language_picture
     );
 
-  
     res.status(200).json({
       success: true,
       messsage: "success added",

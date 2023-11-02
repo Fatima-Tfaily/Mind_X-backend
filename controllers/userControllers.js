@@ -30,7 +30,7 @@ const addUsers = async (req, res) => {
      try {
          const result = await db.query('INSERT INTO users (name, email, password, role, image) VALUES (?, ?, ?, ?, ?)', [name, email, password, role, image])
 
-         await result.save();
+       
          res.status(200).json({
              success: true,
              messsage: "success added",
