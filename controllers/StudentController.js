@@ -4,7 +4,7 @@ const addStudent = async (req, res) => {
   const { name, email, password, role, image } = req.body;
   try {
     const result = await db.query(
-      `INSERT INTO users (name, email, password, role,image) VALUES (?,?,?,'student');`,
+      `INSERT INTO users (name, email, password, role,image) VALUES (?,?,?,'student','no image')`,
       [name, email, password, role]
     );
     console.log(result);
