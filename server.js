@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 require("./config/db");
 const userRoutes = require('./routes/userRoute');
-const languageRoutes = require("./routes/languageRoute");
+const languageRoutes = require("./routes/languageRoutes");
 const chapterRoutes = require("./routes/chapterRoutes");
 const appoitmentRoutes = require("./routes/appoitmentRoute");
 const request=require("./routes/teacherRequestRoute");
