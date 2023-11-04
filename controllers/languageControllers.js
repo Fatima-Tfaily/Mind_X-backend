@@ -90,13 +90,13 @@ const getLagnuageById = async (req, res) => {
   }
 };
 const deleteLagnuageById = async (req, res) => {
-  console.log('first')
+  console.log("first");
   try {
     const [result] = await db.query(
       `DELETE FROM languages WHERE language_id=?`,
       [req.params.id]
     );
-    console.log(result)
+    console.log(result);
     res.status(200).json({
       success: true,
       messgae: "get language by id success",
@@ -118,6 +118,25 @@ const updateLanguage = async (req, res) => {
       message: "Request body is empty.",
     });
   }
+
+  const getLagnuageById = async (req, res) => {
+    try {
+      const [result] = await db.query(
+        `SELECT * FROM languages WHERE language_id=${req.params.id}`
+      );
+      res.status(200).json({
+        success: true,
+        messgae: "get language by id success",
+        data: result,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        messgae: "unable to get language",
+        error,
+      });
+    }
+  };
 
   const {
     language_name,
@@ -166,10 +185,41 @@ const updateLanguage = async (req, res) => {
     });
   }
 };
+
+
+const getLanguages = async (req, res) => {
+  try {
+    const [results] = await db.query("SELECT * FROM languages");
+    
+    // Group languages by category_title
+    const groupedLanguages = results.reduce((acc, language) => {
+      const category = language.category_title;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(language);
+      return acc;
+    }, {});
+
+    res.status(200).json({
+      success: true,
+      message: "Languages retrieved successfully",
+      data: groupedLanguages,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to retrieve languages",
+      error,
+    });
+  }
+};
+
 module.exports = {
   getAllLanguage,
   addLanguage,
   getLagnuageById,
   deleteLagnuageById,
   updateLanguage,
+  getLanguages
 };
