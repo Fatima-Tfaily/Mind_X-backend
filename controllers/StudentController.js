@@ -17,7 +17,7 @@ const addStudent = async (req, res) => {
     res.status(400).json({
       success: false,
       message: "Unable to add new user",
-      error: error.message, // Send the specific error message to the client
+      error: error.message,
     });
   }
 };
@@ -52,7 +52,7 @@ const studentLogin = async (req, res) => {
 const getUserByEmail = async (req, res) => {
   try {
     const [result] = await db.query(`SELECT * FROM users WHERE email = ? AND role = 'student'`, [
-      req.body.email
+      req.param.email
     ]);
     
     res.status(200).json({
@@ -68,4 +68,43 @@ const getUserByEmail = async (req, res) => {
     });
   }
 };
-module.exports = { addStudent, studentLogin , getUserByEmail};
+
+
+const updateStudent = async (req, res) => {
+  console.log("request", req.body);
+
+  if (!req.body || !req.body.id) {
+    return res.status(400).json({
+      success: false,
+      message: "Request body is empty or missing 'id'.",
+    });
+  }
+
+  const { id, name, email, password } = req.body;
+
+  try {
+    const result = await db.query(
+      `UPDATE users 
+       SET 
+        name = ?,
+        email = ?,
+        password = ?
+       WHERE id = ?` ,
+      [name, email, password, id]
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully.",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to update user.",
+      error,
+    });
+  }
+};
+
+module.exports = { addStudent, studentLogin , getUserByEmail, updateStudent};

@@ -8,6 +8,7 @@ const {
   deleteUserByID,
   adminLogin,
   getTeachers,
+  getStudent,
 } = require("../controllers/userController");
 
 router.get("/getAll", getAllUsers);
@@ -16,5 +17,6 @@ router.post("/add", addUser);
 router.delete("/delete/:id", deleteUserByID);
 router.post("/adminLogin", adminLogin);
 router.get("/getTeachers", getTeachers);
+router.get("/getStudent/:name", getStudent);
 
 module.exports = router;

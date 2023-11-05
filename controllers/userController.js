@@ -122,7 +122,27 @@ const getTeachers = async (req, res) => {
     });
   }
 };
-
+const getStudent = async (req, res) => {
+  const { name } = req.params;
+  try {
+    const [result] = await db.query(
+      // Corrected SQL query
+      `SELECT id FROM appoitments NATURAL JOIN users WHERE name=? AND role="student"`,
+      [name] // Pass name as a parameter
+    );
+    res.status(200).json({
+      success: true,
+      message: "Appointments data retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "No student with this name",
+      error,
+    });
+  }
+};
 module.exports = {
   getAllUsers,
   addUser,
@@ -130,4 +150,5 @@ module.exports = {
   deleteUserByID,
   adminLogin,
   getTeachers,
+  getStudent,
 };
