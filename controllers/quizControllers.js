@@ -1,4 +1,40 @@
 const db = require("../config/db");
+const getQuizByLanguageId = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `SELECT * FROM quizes  WHERE language_id=${req.params.id}`
+    );
+    res.status(200).json({
+      success: true,
+      messgae: "get quiz by language id success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      messgae: "unable to get quiz",
+      error,
+    });
+  }
+};
+const getQuizByTeacherId = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `SELECT * FROM quizes INNER JOIN languages ON quizes.language_id=languages.language_id WHERE languages.teacher_id=${req.params.id}`
+    );
+    res.status(200).json({
+      success: true,
+      messgae: "get language by teacher id success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      messgae: "unable to get language",
+      error,
+    });
+  }
+};
 const getAllQuizes = async (req, res) => {
   try {
     const [result] = await db.query("SELECT * FROM quizes");
@@ -17,7 +53,7 @@ const getAllQuizes = async (req, res) => {
 };
 
 const addQuizes= async (req, res) => {
-  console.log("request", req.body);
+
   if (!req.body) {
     return res.status(400).json({
       success: false,
@@ -27,7 +63,7 @@ const addQuizes= async (req, res) => {
 
   const {
     language_id,
-    grade,
+    grade="25",
     quiz,
     option1,
     option2,
@@ -48,7 +84,7 @@ const addQuizes= async (req, res) => {
 
   try {
     const result = await db.query(
-      "INSERT INTO quizes ( language_id,grade,quiz,option1,option2,option3,option4,answer) VALUES (?, ?, ?, ?, ?,?,?,?)",
+      "INSERT INTO quizes ( language_id,grade,quiz,option1,option2,option3,option4,answer) VALUES (?,?,?,?,?,?,?,?)",
       [language_id, grade, quiz, option1, option2, option3, option4, answer]
     );
 
@@ -125,7 +161,7 @@ const updateQuiz = async (req, res) => {
 
   try {
     const result = await db.query(
-      `UPDATE languages 
+      `UPDATE quizes 
        SET 
         language_id = ?,
         grade = ?,
@@ -137,13 +173,14 @@ const updateQuiz = async (req, res) => {
         answer = ?
        WHERE quiz_id = ?`,
       [
-        language_name,
-        category_title,
-        days_to_complete,
-        teacher_id,
-        nb_of_students,
-        nb_of_chapters,
-        language_picture,
+        language_id,
+        grade,
+        quiz,
+        option1,
+        option2,
+        option3,
+        option4,
+        answer,
         req.params.id,
       ]
     );
@@ -162,9 +199,11 @@ const updateQuiz = async (req, res) => {
   }
 };
 module.exports = {
+  getQuizByLanguageId,
   getAllQuizes,
   deleteQuizById,
   addQuizes,
   updateQuiz,
   getQuizById,
+  getQuizByTeacherId,
 };

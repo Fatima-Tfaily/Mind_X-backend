@@ -1,4 +1,6 @@
 const db = require("../config/db");
+
+
 const getAllLanguage = async (req, res) => {
   try {
     const [result] = await db.query("SELECT * FROM languages");
@@ -51,7 +53,7 @@ const addLanguage = async (req, res) => {
         language_name,
         category_title,
         days_to_complete,
-        1,
+        teacher_id,
         0,
         nb_of_chapters,
         language_picture,
@@ -67,6 +69,24 @@ const addLanguage = async (req, res) => {
     res.status(500).json({
       success: false,
       messgae: "unable to added language",
+      error,
+    });
+  }
+};
+const getLagnuageByTeacherId = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `SELECT * FROM languages WHERE teacher_id=${req.params.id}`
+    );
+    res.status(200).json({
+      success: true,
+      messgae: "get language by teacher id success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      messgae: "unable to get language",
       error,
     });
   }
@@ -172,4 +192,5 @@ module.exports = {
   getLagnuageById,
   deleteLagnuageById,
   updateLanguage,
+  getLagnuageByTeacherId,
 };

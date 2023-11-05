@@ -1,5 +1,23 @@
 const db = require("../config/db");
 
+const getChapterByLanguageId = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `SELECT * FROM language_content INNER JOIN languages ON language_content.language_id=languages.language_id WHERE languages.teacher_id=${req.params.id}`
+    );
+    res.status(200).json({
+      success: true,
+      messgae: "get language by teacher id success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      messgae: "unable to get language",
+      error,
+    });
+  }
+};
 const getAllChapter = async (req, res) => {
   try {
     const [result] = await db.query("SELECT * FROM language_content");
@@ -140,15 +158,15 @@ const updateChapter = async (req, res) => {
     const result = await db.query(
       `UPDATE language_content 
        SET 
-        language_id =?,
-        chapter_title=? ,
-        chapter_content=? ,
-        question=? ,
-        answer=?,
-        question1 =?,
-        answer1 =?,
-       question2=?,
-        answer2=?
+        language_id = ?,
+        chapter_title = ? ,
+        chapter_content = ? ,
+        question = ? ,
+        answer = ?,
+        question1 = ?,
+        answer1 = ?,
+       question2 = ?,
+        answer2 = ?
          WHERE language_content_id = ?`,
       [
         language_id,
@@ -188,6 +206,7 @@ const updateChapter = async (req, res) => {
   }
 };
 module.exports = {
+  getChapterByLanguageId,
   getAllChapter,
   addChapter,
   getChapterById,
