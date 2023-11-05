@@ -1,22 +1,23 @@
 const db = require("../config/db");
 
 const addStudent = async (req, res) => {
-  const { name, email, password, role, image } = req.body;
+  const { name, email, password } = req.body;
   try {
     const result = await db.query(
-      `INSERT INTO users (name, email, password, role,image) VALUES (?,?,?,'student','no image')`,
-      [name, email, password, role]
+      `INSERT INTO users (name, email, password, role) VALUES (?,?,?,'student');`,
+      [name, email, password]
     );
     console.log(result);
     res.status(201).json({
       success: true,
       message: "User added successfully",
     });
-  } catch (error) {
+  }catch (error) {
+    console.error('Error:', error);
     res.status(400).json({
       success: false,
       message: "Unable to add new user",
-      error,
+      error: error.message, // Send the specific error message to the client
     });
   }
 };
@@ -48,4 +49,23 @@ const studentLogin = async (req, res) => {
     });
   }
 };
-module.exports = { addStudent, studentLogin };
+const getUserByEmail = async (req, res) => {
+  try {
+    const [result] = await db.query(`SELECT * FROM users WHERE email = ? AND role = 'student'`, [
+      req.body.email
+    ]);
+    
+    res.status(200).json({
+      success: true,
+      message: "User data retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Unable to retrieve new user",
+      error,
+    });
+  }
+};
+module.exports = { addStudent, studentLogin , getUserByEmail};

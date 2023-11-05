@@ -3,7 +3,7 @@ const db = require("../config/db");
 const getChapterByLanguageId = async (req, res) => {
   try {
     const [result] = await db.query(
-      `SELECT * FROM language_content INNER JOIN languages ON language_content.language_id=languages.language_id WHERE languages.teacher_id=${req.params.id}`
+      `SELECT * FROM language_content WHERE language_id=${req.params.id}`
     );
     res.status(200).json({
       success: true,
