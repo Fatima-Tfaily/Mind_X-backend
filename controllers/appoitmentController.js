@@ -96,9 +96,34 @@ const getStudentId = async (req, res) => {
   }
 };
 
+const cancelAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Assuming you have a column named 'status' in your appointments table
+    const result = await db.query(
+      `UPDATE appoitments SET status = 'Canceled' WHERE appoitment_id = ?`,
+      [id]
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Appointment canceled successfully.',
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Unable to cancel appointment.',
+      error,
+    });
+  }
+};
+
 module.exports = {
   getAllAppoitment,
   addAppoitment,
   deleteAppoitmentByID,
   getStudentId,
+  cancelAppointment
 };
