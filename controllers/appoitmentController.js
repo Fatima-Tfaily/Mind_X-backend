@@ -29,8 +29,7 @@ const addAppoitment = async (req, res) => {
   } = req.body;
   try {
     const result = await db.query(
-      `INSERT INTO appoitments (appoitment_name, appoitment_date,appoitment_start_time,appoitment_end_time,status,
-      student_id, teacher_id) VALUES (?,?,?,?,?,?,?);`,
+      `INSERT INTO appoitments (appoitment_name, appoitment_date,appoitment_start_time,appoitment_end_time,status,student_id, teacher_id) VALUES (?,?,?,?,?,?,?);`,
       [
         appoitment_name,
         appoitment_date,
@@ -80,7 +79,7 @@ const getStudentId = async (req, res) => {
   try {
     const [result] = await db.query(
       // Corrected SQL query
-      `SELECT student_id FROM appointments NATURAL JOIN users WHERE name=? AND role="student"`,
+      `SELECT id FROM appoitments NATURAL JOIN users WHERE name=? AND role="student"`,
       [name] // Pass name as a parameter
     );
     res.status(200).json({
