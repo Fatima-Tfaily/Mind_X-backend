@@ -1,4 +1,6 @@
 const db = require("../config/db");
+
+
 const getAllLanguage = async (req, res) => {
   try {
     const [result] = await db.query("SELECT * FROM languages");
@@ -34,16 +36,15 @@ const addLanguage = async (req, res) => {
     nb_of_chapters,
     language_picture,
   } = req.body;
-    console.log(
-      language_name,
-      category_title,
-      days_to_complete,
-      teacher_id,
-      nb_of_students,
-      nb_of_chapters,
-      language_picture
-    );
-    
+  console.log(
+    language_name,
+    category_title,
+    days_to_complete,
+    teacher_id,
+    nb_of_students,
+    nb_of_chapters,
+    language_picture
+  );
 
   try {
     const result = await db.query(
@@ -53,13 +54,12 @@ const addLanguage = async (req, res) => {
         category_title,
         days_to_complete,
         teacher_id,
-        nb_of_students,
+        0,
         nb_of_chapters,
         language_picture,
       ]
     );
 
-    await result.save();
     res.status(200).json({
       success: true,
       messsage: "success added",
@@ -69,6 +69,24 @@ const addLanguage = async (req, res) => {
     res.status(500).json({
       success: false,
       messgae: "unable to added language",
+      error,
+    });
+  }
+};
+const getLagnuageByTeacherId = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `SELECT * FROM languages WHERE teacher_id=${req.params.id}`
+    );
+    res.status(200).json({
+      success: true,
+      messgae: "get language by teacher id success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      messgae: "unable to get language",
       error,
     });
   }
@@ -92,10 +110,13 @@ const getLagnuageById = async (req, res) => {
   }
 };
 const deleteLagnuageById = async (req, res) => {
+  console.log("first");
   try {
     const [result] = await db.query(
-      `DELETE FROM languages WHERE  language_id=${req.params.id}`
+      `DELETE FROM languages WHERE language_id=?`,
+      [req.params.id]
     );
+    console.log(result);
     res.status(200).json({
       success: true,
       messgae: "get language by id success",
@@ -118,6 +139,25 @@ const updateLanguage = async (req, res) => {
     });
   }
 
+  const getLagnuageById = async (req, res) => {
+    try {
+      const [result] = await db.query(
+        `SELECT * FROM languages WHERE language_id=${req.params.id}`
+      );
+      res.status(200).json({
+        success: true,
+        messgae: "get language by id success",
+        data: result,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        messgae: "unable to get language",
+        error,
+      });
+    }
+  };
+
   const {
     language_name,
     category_title,
@@ -129,8 +169,8 @@ const updateLanguage = async (req, res) => {
   } = req.body;
 
   try {
-      const result = await db.query(
-        `UPDATE languages 
+    const result = await db.query(
+      `UPDATE languages 
        SET 
         language_name = ?,
         category_title = ?,
@@ -140,29 +180,18 @@ const updateLanguage = async (req, res) => {
         nb_of_chapters = ?,
         language_picture = ?
        WHERE language_id = ?`,
-        [
-          language_name,
-          category_title,
-          days_to_complete,
-          teacher_id,
-          nb_of_students,
-          nb_of_chapters,
-          language_picture,
-          req.params.id,
-        ]
-      );
-      console.log(
-          req.params.id,
+      [
         language_name,
         category_title,
         days_to_complete,
         teacher_id,
         nb_of_students,
         nb_of_chapters,
-        language_picture
-      );
+        language_picture,
+        req.params.id,
+      ]
+    );
 
-    await result.save();
     res.status(200).json({
       success: true,
       messsage: "success added",
@@ -176,4 +205,42 @@ const updateLanguage = async (req, res) => {
     });
   }
 };
-module.exports = { getAllLanguage ,addLanguage,getLagnuageById,deleteLagnuageById,updateLanguage}
+
+
+const getLanguages = async (req, res) => {
+  try {
+    const [results] = await db.query("SELECT * FROM languages");
+    
+    // Group languages by category_title
+    const groupedLanguages = results.reduce((acc, language) => {
+      const category = language.category_title;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(language);
+      return acc;
+    }, {});
+
+    res.status(200).json({
+      success: true,
+      message: "Languages retrieved successfully",
+      data: groupedLanguages,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to retrieve languages",
+      error,
+    });
+  }
+};
+
+module.exports = {
+  getAllLanguage,
+  addLanguage,
+  getLagnuageById,
+  deleteLagnuageById,
+  updateLanguage,
+  getLagnuageByTeacherId,
+  getLanguages
+};
