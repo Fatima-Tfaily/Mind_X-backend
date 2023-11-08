@@ -4,13 +4,15 @@ const router = express.Router();
 const {
   addStudent,
   studentLogin,
-  getUserByEmail,
-  updateStudent
+  getStudentByEmail,
+  updateStudent,
+  getStudentAppoitment
 } = require("../controllers/StudentController");
 
 router.post("/addStudent", addStudent);
 router.post("/studentLogin", studentLogin);
-router.get("/getUserByEmail/:email", getUserByEmail);
+router.get("/getStudentByEmail/:email", getStudentByEmail);
 router.post("/updateStudent", updateStudent);
+router.get("/getStudentAppoitment/:email", getStudentAppoitment);
 
 module.exports = router;
