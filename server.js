@@ -6,14 +6,14 @@ const bodyParser = require("body-parser");
 
 require("./config/db");
 const studentRoutes = require("./routes/StudentRoute");
-const userRoutes = require('./routes/userRoute');
+const userRoutes = require("./routes/userRoute");
 const languageRoutes = require("./routes/languageRoutes");
 const chapterRoutes = require("./routes/chapterRoutes");
 const appoitmentRoutes = require("./routes/appoitmentRoute");
-const request=require("./routes/teacherRequestRoute");
-const studentInfo= require("./routes/studentInfoRoute");
+const request = require("./routes/teacherRequestRoute");
+const studentInfo = require("./routes/studentInfoRoute");
 const teacher = require("./routes/teacherRoute");
-const quiz=require("./routes/quizRoutes")
+const quiz = require("./routes/quizRoutes");
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -31,4 +31,4 @@ app.use("/quiz", quiz);
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-});  
+});

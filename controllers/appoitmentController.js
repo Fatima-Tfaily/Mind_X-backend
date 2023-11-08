@@ -96,9 +96,28 @@ const getStudentId = async (req, res) => {
   }
 };
 
+getAppoitmentTeacherId = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `SELECT * FROM appoitments WHERE teacher_id=${req.params.id}`
+    );
+    res.status(200).json({
+      success: true,
+      messgae: "get appoitment by id success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      messgae: "unable to get appoitment",
+      error,
+    });
+  }
+};
 module.exports = {
   getAllAppoitment,
   addAppoitment,
   deleteAppoitmentByID,
   getStudentId,
+  getAppoitmentTeacherId,
 };

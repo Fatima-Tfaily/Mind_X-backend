@@ -5,10 +5,11 @@ const {
   addLanguage,
   getAllLanguage,
   getLagnuageById,
-    deleteLagnuageById,
-   getLagnuageByTeacherId,
+  deleteLagnuageById,
+  getLagnuageByTeacherId,
   updateLanguage,
-  getLanguages
+  getLanguages,
+  getStudentTeacherId,
 } = require("../controllers/languageControllers");
 
 router.post("/addLanguage", addLanguage);
@@ -18,4 +19,5 @@ router.put("/updateLanguageById/:id", updateLanguage);
 router.get("/getLanguageById/:id", getLagnuageById);
 router.get("/getLanguageByTechearId/:id", getLagnuageByTeacherId);
 router.get("/getLanguages", getLanguages);
+router.get("/getLanguages/:id", getStudentTeacherId);
 module.exports = router;
