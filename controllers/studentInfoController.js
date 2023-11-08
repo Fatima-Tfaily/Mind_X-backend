@@ -148,6 +148,25 @@ const deleteEverythingStudent = async (req, res) => {
     });
   }
 };
+const deleteStudentInfo = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `DELETE FROM students_info WHERE student_info_id=?`,
+      [req.params.id]
+    );
+    res.status(200).json({
+      success: true,
+      message: "Delete Student success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to delete student",
+      error,
+    });
+  }
+};
 
 module.exports = {
   getStudents,
@@ -155,5 +174,6 @@ module.exports = {
   getStudentInformation,
   dropCourse,
   deleteEverythingStudent,
-  enrollCourse
+  enrollCourse,
+  deleteStudentInfo
 };

@@ -1,6 +1,5 @@
 const db = require("../config/db");
 
-
 const getAllLanguage = async (req, res) => {
   try {
     const [result] = await db.query("SELECT * FROM languages");
@@ -206,11 +205,10 @@ const updateLanguage = async (req, res) => {
   }
 };
 
-
 const getLanguages = async (req, res) => {
   try {
     const [results] = await db.query("SELECT * FROM languages");
-    
+
     // Group languages by category_title
     const groupedLanguages = results.reduce((acc, language) => {
       const category = language.category_title;
@@ -235,6 +233,24 @@ const getLanguages = async (req, res) => {
   }
 };
 
+const getStudentTeacherId = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `SELECT * FROM students_info NATURALJOIN languages WHERE teacher_id=${req.params.id}`
+    );
+    res.status(200).json({
+      success: true,
+      messgae: "get student language by id success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      messgae: "unable to get student",
+      error,
+    });
+  }
+};
 module.exports = {
   getAllLanguage,
   addLanguage,
@@ -242,5 +258,6 @@ module.exports = {
   deleteLagnuageById,
   updateLanguage,
   getLagnuageByTeacherId,
-  getLanguages
+  getLanguages,
+  getStudentTeacherId,
 };
