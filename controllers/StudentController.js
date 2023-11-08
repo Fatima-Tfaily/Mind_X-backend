@@ -80,7 +80,7 @@ const updateStudent = async (req, res) => {
     });
   }
 
-  const { id, name, email, password } = req.body;
+  const { id, name, email, password , image} = req.body;
 
   try {
     const result = await db.query(
@@ -88,9 +88,10 @@ const updateStudent = async (req, res) => {
        SET 
         name = ?,
         email = ?,
-        password = ?
+        password = ?,
+        image=?
        WHERE id = ?`,
-      [name, email, password, id]
+      [name, email, password, id, image]
     );
 
     res.status(200).json({

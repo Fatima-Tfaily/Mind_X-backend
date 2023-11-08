@@ -21,8 +21,8 @@ const getStudents = async (req, res) => {
 const deleteStudent = async (req, res) => {
   try {
     const [result] = await db.query(
-      `DELETE FROM users WHERE id=? AND role='student'`,
-      [req.params.id]
+      `DELETE FROM users WHERE email=? AND role='student'`,
+      [req.params.email]
     );
     res.status(200).json({
       success: true,
@@ -81,9 +81,79 @@ const dropCourse = async (req, res) => {
     });
   }
 };
+const deleteEverythingStudent = async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `DELETE users, students_info, appointments 
+       FROM users
+       JOIN students_info ON students_info.student_id = users.id
+       LEFT JOIN appointments ON appointments.student_id = students_info.student_id
+       WHERE users.email = ? AND users.role = 'student'`,
+      [req.params.email]
+    );
+    res.status(200).json({
+      success: true,
+      message: "Delete Student success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to delete student",
+      error,
+    });
+  }
+};const enrollCourse = async (req, res) => {
+  if (!req.body) {
+    return res.status(400).json({
+      success: false,
+      message: "Request body is empty.",
+    });
+  }
+
+  const {
+    student_id,
+    language_id,
+    days_of_attendance,
+    completed,
+    scores_count,
+    chapters_completed,
+    enrolled_day
+  } = req.body;
+
+  try {
+    const result = await db.query(
+      "INSERT INTO students_info (student_id, language_id, days_of_attendance, completed, scores_count, chapters_completed, enrolled_day) VALUES (?,?,?,?,?,?,?)",
+      [
+        student_id,
+        language_id,
+        days_of_attendance,
+        completed,
+        scores_count,
+        chapters_completed,
+        enrolled_day
+      ]
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully Enrolled",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to enroll user in course",
+      error,
+    });
+  }
+};
+
 module.exports = {
   getStudents,
   deleteStudent,
   getStudentInformation,
-  dropCourse
+  dropCourse,
+  deleteEverythingStudent,
+  enrollCourse
 };
