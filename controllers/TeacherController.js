@@ -65,9 +65,31 @@ const teacherLogin = async (req, res) => {
     });
   }
 };
+const addTeacher = async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const result = await db.query(
+      `INSERT INTO users (name, email, password, role) VALUES (?,?,?,'teacher');`,
+      [name, email, password]
+    );
+    console.log(result);
+    res.status(201).json({
+      success: true,
+      message: "User added successfully",
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(400).json({
+      success: false,
+      message: "Unable to add new user",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   getTeacher,
   deleteTeacher,
   teacherLogin,
+  addTeacher
 };

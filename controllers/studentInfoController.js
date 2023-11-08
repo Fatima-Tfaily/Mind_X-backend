@@ -21,8 +21,12 @@ const getStudents = async (req, res) => {
 const deleteStudent = async (req, res) => {
   try {
     const [result] = await db.query(
-      `DELETE FROM users WHERE email=? AND role='student'`,
-      [req.params.email]
+      `DELETE users, students_info, appointments 
+       FROM users
+       JOIN students_info ON students_info.student_id = users.id
+       LEFT JOIN appointments ON appointments.student_id = students_info.student_id
+       WHERE users.id = ? AND users.role = 'student'`,
+      [req.params.id]
     );
     res.status(200).json({
       success: true,
@@ -47,8 +51,8 @@ const getStudentInformation = async (req, res) => {
       JOIN users 
       ON students_info.student_id = users.id
       WHERE users.role ='student' AND users.email = ?`,
-       [email] 
-       );
+      [email]
+    );
     res.status(200).json({
       success: true,
       message: "User data retrieved successfully",
@@ -103,7 +107,8 @@ const deleteEverythingStudent = async (req, res) => {
       error,
     });
   }
-};const enrollCourse = async (req, res) => {
+};
+const enrollCourse = async (req, res) => {
   if (!req.body) {
     return res.status(400).json({
       success: false,
@@ -119,7 +124,7 @@ const deleteEverythingStudent = async (req, res) => {
     scores_count,
     chapters_completed,
     enrolled_day,
-    excpected_finish_day
+    excpected_finish_day,
   } = req.body;
 
   try {
@@ -132,7 +137,8 @@ const deleteEverythingStudent = async (req, res) => {
         completed,
         scores_count,
         chapters_completed,
-        enrolled_day,excpected_finish_day
+        enrolled_day,
+        excpected_finish_day,
       ]
     );
 
@@ -176,5 +182,5 @@ module.exports = {
   dropCourse,
   deleteEverythingStudent,
   enrollCourse,
-  deleteStudentInfo
+  deleteStudentInfo,
 };
