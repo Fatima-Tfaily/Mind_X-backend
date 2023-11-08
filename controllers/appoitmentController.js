@@ -24,20 +24,20 @@ const addAppoitment = async (req, res) => {
     appoitment_start_time,
     appoitment_end_time,
     status,
-    student_id,
-    teacher_id,
+    // student_id,
+    // teacher_id,
   } = req.body;
   try {
     const result = await db.query(
-      `INSERT INTO appoitments (appoitment_name, appoitment_date,appoitment_start_time,appoitment_end_time,status,student_id, teacher_id) VALUES (?,?,?,?,?,?,?);`,
+      `INSERT INTO appoitments (appoitment_name, appoitment_date,appoitment_start_time,appoitment_end_time,status) VALUES (?,?,?,?,?);`,
       [
         appoitment_name,
         appoitment_date,
         appoitment_start_time,
         appoitment_end_time,
         status,
-        student_id,
-        teacher_id,
+        // student_id,
+        // teacher_id,
       ]
     );
     console.log(result);
@@ -120,7 +120,7 @@ const cancelAppointment = async (req, res) => {
   }
 };
 
-getAppoitmentTeacherId = async (req, res) => {
+const getAppoitmentTeacherId = async (req, res) => {
   try {
     const [result] = await db.query(
       `SELECT * FROM appoitments WHERE teacher_id=${req.params.id}`

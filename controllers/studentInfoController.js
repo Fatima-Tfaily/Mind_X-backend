@@ -118,12 +118,13 @@ const deleteEverythingStudent = async (req, res) => {
     completed,
     scores_count,
     chapters_completed,
-    enrolled_day
+    enrolled_day,
+    excpected_finish_day
   } = req.body;
 
   try {
     const result = await db.query(
-      "INSERT INTO students_info (student_id, language_id, days_of_attendance, completed, scores_count, chapters_completed, enrolled_day) VALUES (?,?,?,?,?,?,?)",
+      "INSERT INTO students_info (student_id, language_id, days_of_attendance, completed, scores_count, chapters_completed, enrolled_day, excpected_finish_day) VALUES (?,?,?,?,?,?,?, ?)",
       [
         student_id,
         language_id,
@@ -131,7 +132,7 @@ const deleteEverythingStudent = async (req, res) => {
         completed,
         scores_count,
         chapters_completed,
-        enrolled_day
+        enrolled_day,excpected_finish_day
       ]
     );
 
